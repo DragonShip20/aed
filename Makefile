@@ -3,14 +3,14 @@ LD=ld
 
 ASMFLAGS=-f elf64
 
-SRC=aed.asm
-OBJ=aed.o
+SRC := $(wildcard *.asm)
+OBJ := $(SRC:.asm=.o)
 OUT=aed
 
 all: build
 
-$(OBJ): $(SRC)
-	@$(AS) $(ASMFLAGS) $(SRC) -o $(OBJ)
+%.o: %.asm
+	@$(AS) $(ASMFLAGS) $< -o $@
 	@echo Compiled ASM files.
 
 $(OUT): $(OBJ)
