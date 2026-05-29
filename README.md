@@ -3,7 +3,7 @@
 AED is a small, light editor written 100% in x86 assembly.
 
 ## Features
-For now AED doesn't have any features, but the creator is working on it
+Terminal raw mode usage, with lightning fast editing
 
 ## Goals
 - [ ] Opening disk files
@@ -11,7 +11,7 @@ For now AED doesn't have any features, but the creator is working on it
 - [ ] Super fast operations
 - [ ] Dynamic buffer edition
 - [ ] Syntax highlighting
-- [ ] Using terminal raw mode instead of default printing
+- [x] Using terminal raw mode instead of default printing
 
 ## Build and run
 Installing dependencies
