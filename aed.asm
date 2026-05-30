@@ -14,12 +14,23 @@ TCSETS equ 0x5402
 ICANON equ 0000002h
 ECHO   equ 0000010h
 
+;; ANSI escape codes
+clear_screen db 27,"[2J",27,"[H"
+clear_screen_len equ $ - clear_screen
+
 section .text
 global _start
 
 _start: 
     call enable_raw_mode
+    call render
     exit 0
+
+render:
+    ;; TODO: optimise this, make this faster
+    print clear_screen, clear_screen_len
+    print buffer, 512
+    ret
 
 enable_raw_mode:
     ;; ioctl(TCGETS)
