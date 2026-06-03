@@ -24,6 +24,17 @@ global _start
 _start: 
     call enable_raw_mode
     call render
+.main_loop:
+    mov rbx, [cursor]
+    lea rcx, [buffer+rbx]
+    getc rcx
+    inc qword [cursor]
+    cmp byte [ecx], 'q'
+    je .main_loop_end
+    call render
+    jmp .main_loop
+    
+.main_loop_end:
     exit 0
 
 render:
