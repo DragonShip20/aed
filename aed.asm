@@ -13,6 +13,8 @@ TCGETS equ 0x5401
 TCSETS equ 0x5402
 ICANON equ 0000002h
 ECHO   equ 0000010h
+IXON equ 0002000h
+ICRNL  equ 0000400h
 
 ;; ANSI escape codes
 clear_screen db 27,"[2J",27,"[H"
@@ -50,6 +52,11 @@ enable_raw_mode:
     mov rsi, TCGETS
     mov rdx, termios
     syscall
+
+    ;; disable IXON + ICRNL
+    mov eax, [termios + 0]
+    and eax, ~(IXON | ICRNL)
+    mov [termios + 0], eax
 
     ;; disable ICANON + ECHO
     mov eax, [termios + 12]
