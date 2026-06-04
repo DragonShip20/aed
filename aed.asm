@@ -26,10 +26,10 @@ _start:
     call render
 .main_loop:
     mov rbx, [cursor]
-    lea rcx, [buffer+rbx]
-    getc rcx
+    lea r8, [buffer+rbx]
+    getc r8
     inc qword [cursor]
-    cmp byte [ecx], 'q'
+    cmp byte [r8], 'q'
     je .main_loop_end
     call render
     jmp .main_loop
