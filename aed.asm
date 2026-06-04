@@ -11,8 +11,6 @@ length dq 0
 input db 0
 
 ;; Constants for setting terminal raw mode
-TCGETS equ 0x5401
-TCSETS equ 0x5402
 ICANON equ 0000002h
 ECHO   equ 0000010h
 IXON equ 0002000h
@@ -90,12 +88,7 @@ render:
     ret
 
 enable_raw_mode:
-    ;; ioctl(TCGETS)
-    mov rax, 16
-    mov rdi, 0
-    mov rsi, TCGETS
-    mov rdx, termios
-    syscall
+    tcgets termios
 
     ;; disable IXON + ICRNL
     mov eax, [termios + 0]
@@ -107,11 +100,5 @@ enable_raw_mode:
     and eax, ~(ICANON | ECHO)
     mov [termios + 12], eax
 
-    ;; ioctl(TCSETS)
-    mov rax, 16
-    mov rdi, 0
-    mov rsi, TCSETS
-    mov rdx, termios
-    syscall
-
+    tcsets termios
     ret
