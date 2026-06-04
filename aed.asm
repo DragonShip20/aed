@@ -20,18 +20,22 @@ ICRNL  equ 0000400h
 clear_screen db 27,"[2J",27,"[H"
 clear_screen_len equ $ - clear_screen
 
+;; Keyboard shortcuts
+CTRL_Q equ 17
+
 section .text
 global _start
 
 _start: 
     call enable_raw_mode
     call render
+
 .main_loop:
     mov rbx, [cursor]
     lea r8, [buffer+rbx]
     getc r8
     inc qword [cursor]
-    cmp byte [r8], 'q'
+    cmp byte [r8], CTRL_Q
     je .main_loop_end
     call render
     jmp .main_loop
