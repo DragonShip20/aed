@@ -5,7 +5,7 @@ termios resb 64
 
 section .data
 ;; Our buffer is currently 512b, will be expanded
-buffer times 512 db 0
+buffer times 4096 db 0
 cursor dq 0
 length dq 0
 input db 0
