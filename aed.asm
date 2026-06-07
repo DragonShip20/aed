@@ -25,6 +25,10 @@ CTRL_Q equ 17
 BACKSPACE1 equ 127
 BACKSPACE2 equ 8
 
+;; Special messages
+exit_message db "Really exit? (y/n): "
+exit_message_len equ $-exit_message
+
 section .text
 global _start
 
@@ -52,7 +56,23 @@ _start:
     jmp .main_loop
     
 .main_loop_end:
+    print clear_screen, clear_screen_len
+    print exit_message, exit_message_len
+    mov r8, input
+    getc r8
+    call exit_check
+    jmp .main_loop
+
+.exit:
+    print clear_screen, clear_screen_len
     exit 0
+
+exit_check:
+    cmp byte [r8], 'y'
+    je _start.exit
+    cmp byte [r8], 'n'
+    je _start.main_loop
+    ret
 
 handle_char:
     cmp byte [r8], CTRL_Q
