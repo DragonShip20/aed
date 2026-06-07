@@ -1,24 +1,14 @@
 %include "syscalls.asm"
-
-section .bss
-termios resb 64
+%include "terminal.inc"
 
 section .data
-;; Our buffer is currently 512b, will be expanded
+global buffer
+
+;; Our buffer is currently 4096b, will be expanded
 buffer times 4096 db 0
 cursor dq 0
 length dq 0
 input db 0
-
-;; Constants for setting terminal raw mode
-ICANON equ 0000002h
-ECHO   equ 0000010h
-IXON equ 0002000h
-ICRNL  equ 0000400h
-
-;; ANSI escape codes
-clear_screen db 27,"[2J",27,"[H"
-clear_screen_len equ $ - clear_screen
 
 ;; Special keys
 CTRL_Q equ 17
@@ -101,24 +91,3 @@ handle_backspace:
     call render
     jmp _start.main_loop
 
-render:
-    ;; TODO: optimise this, make this faster
-    print clear_screen, clear_screen_len
-    print buffer, 512
-    ret
-
-enable_raw_mode:
-    tcgets termios
-
-    ;; disable IXON + ICRNL
-    mov eax, [termios + 0]
-    and eax, ~(IXON | ICRNL)
-    mov [termios + 0], eax
-
-    ;; disable ICANON + ECHO
-    mov eax, [termios + 12]
-    and eax, ~(ICANON | ECHO)
-    mov [termios + 12], eax
-
-    tcsets termios
-    ret

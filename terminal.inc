@@ -1,0 +1,4 @@
+extern render
+extern enable_raw_mode
+extern clear_screen
+extern clear_screen_len
