@@ -1,4 +1,4 @@
-%include "syscalls.asm"
+%include "syscalls.inc"
 %include "aed.inc"
 
 section .bss
